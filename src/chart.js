@@ -1,46 +1,41 @@
 import React from 'react';
-import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryBrushContainer, VictoryAxis, createContainer } from 'victory';
+import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryBrushContainer, VictoryAxis } from 'victory';
+
+let width = 800
+let zoomHeight = 500
+let brushHeight = 200
 
 class Chart extends React.Component {
   constructor(props){
     super(props)
     
     this.state = {
-      zoomDomain: props.zoomDomain,
-      brushDomain: props.brushDomain
+      zoomDomain: null,
+      brushDomain: null
     }
   }
   
   handleBrush(i) {
-    console.log("chart.handleBrush")
     this.setState({zoomDomain: i})
-    this.props.parentReact.setState({zoomDomain: i})
-    this.props.handleBrush(i)
-    // this.props.handleBrush.bind(this.props.parentReact, i)
   }
   
   handleZoom(i) {
-    console.log("chart.handleZoom")
     this.setState({brushDomain: i})
-    this.props.parentReact.setState({brushDomain: i})
-    this.props.handleZoom(i)
-    // this.props.handleZoom.bind(this.props.parentReact, i)
   }
     
   render() {
-
-    // const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
     
     return (
       <div>
           <VictoryChart
-            width={400}
-            height={300}
+            width={width}
+            height={zoomHeight}
             scale={{x: "time"}}
             containerComponent={
               <VictoryZoomContainer
+                responsive={false}
                 zoomDimension="x"
-                zoomDomain={this.props.zoomDomain}
+                zoomDomain={this.state.zoomDomain}
                 onZoomDomainChange={this.handleZoom.bind(this)}
               />
             }
@@ -61,20 +56,21 @@ class Chart extends React.Component {
           </VictoryChart>
 
           <VictoryChart
-            width={400}
-            height={100}
+            width={width}
+            height={brushHeight}
             scale={{x: "time"}}
             padding={{top: 30, left: 50, right: 50, bottom: 30}}
             containerComponent={
               <VictoryBrushContainer
+                responsive={false}
                 brushDimension="x"
-                brushDomain={this.props.brushDomain}
+                brushDomain={this.state.brushDomain}
                 onBrushDomainChange={this.handleBrush.bind(this)}
               />
             }
           >
             <VictoryAxis
-              tickFormat={(x) => new Date(x).getFullYear()}
+              // tickFormat={(x) => new Date(x).getFullYear()}
               style={{ tickLabels: {fill: "white"}}}
             />
             <VictoryAxis dependentAxis

@@ -12,45 +12,29 @@ class App extends React.Component {
     let defaultStartCoin = DefaultStartCoin
 	  this.state = {
       selectedCoin: defaultStartCoin,
-		  priceData: null,
-		  zoomDomain: null,
-		  brushDomain: null
+		  priceData: null
 	  };
-    this.handleOnChange(defaultStartCoin)
-  }
-  
-  handleBrush(domain) {
-    console.log("app.handleBrush.type1", this.constructor.name)
-    // this.setState({zoomDomain: domain});
-  }
-  
-  handleZoom(domain) {
-    console.log("app.handleZoom.type1", this.constructor.name)
-    this.setState({brushDomain: domain});
+    this.handleOnCoinSelectionChange(defaultStartCoin)
   }
   
   successCallback(response, selectedCoin) {
     let newPriceData = response.data.prices.map(t => {
       return {x: new Date(t[0]), y: t[1]}
     })
-    // let newZoomDomain = {x: [newPriceData[0].x, newPriceData[newPriceData.length-1].x], y: [newPriceData[0].y, newPriceData[newPriceData.length-1].y]}
-    let newZoomDomain = null //null makes it zoom out to show the whole chart
-    let newBrushDomain = null //null makes it zoom out to show the whole chart
-    console.log("newZoomDomain",newZoomDomain)
-    this.setState({selectedCoin: selectedCoin, priceData: newPriceData, zoomDomain: newZoomDomain, brushDomain: newBrushDomain});
+    this.setState({selectedCoin: selectedCoin, priceData: newPriceData});
   }
   
-  async handleOnChange(selectedCoin) {
-    let response = getCoinHistoricalPrice(selectedCoin)
-    response.then((r) => this.successCallback(r, selectedCoin))
+  async handleOnCoinSelectionChange(selectedCoin) {
+    getCoinHistoricalPrice(selectedCoin)
+      .then((r) => this.successCallback(r, selectedCoin))
       .catch((err) => console.error(err));
   }
   
   render() {
     return (
       <div>
-        <CoinChooser selectedCoin={this.state.selectedCoin} handleOnChange={(i) => this.handleOnChange(i)} />
-        <Chart zoomDomain = {this.state.zoomDomain} priceData = {this.state.priceData} handleZoom = {(i) => this.handleZoom(i)} handleBrush = {(i) => this.handleBrush(i)} parentReact = {this} />
+        <CoinChooser selectedCoin={this.state.selectedCoin} handleOnCoinSelectionChange={(i) => this.handleOnCoinSelectionChange(i)} />
+        <Chart priceData = {this.state.priceData} />
       </div>
     );
   }
