@@ -53,19 +53,13 @@ class Chart extends React.Component {
             type: 'candlestick',
             id: 'luna-ohlc',
             name: 'Luna Stock Price',
-            data: this.props.priceData,
-            dataGrouping: {
-                units: groupingUnits
-            }
+            data: this.props.priceData
         }, {
             type: 'column',
             id: 'luna-volume',
             name: 'Luna Volume',
             yAxis: 1,
-            data: this.props.volumeData,
-            dataGrouping: {
-                units: groupingUnits
-            }
+            data: this.props.volumeData
         }],
         "colors": ["#f1c40f", "#2ecc71", "#9b59b6", "#e74c3c", "#34495e", "#3498db", "#1abc9c", "#f39c12", "#d35400"],
         "chart": {
@@ -124,10 +118,6 @@ class Chart extends React.Component {
             split: true
         }
       }
-    
-    console.log("chart.render.props.priceData", this.props.priceData)
-    console.log("chart.render.props.volumeData", this.props.volumeData)
-    console.log("chart.render.options", options)
     
     return (
       <>

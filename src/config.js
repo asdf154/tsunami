@@ -1,12 +1,23 @@
 export const CoinsConfig = {
-  "coins": {
-    "BITFINEX_SPOT_LUNA_USD": "Luna - BitFinex",
-    "BITTREX_SPOT_LUNA_USDT": "Luna - Bittrex",
-    "GEMINI_SPOT_LUNA_USD": "Luna - Gemini"
-  }
+  "BITFINEX_SPOT_LUNA_USD": "Luna - BitFinex",
+  "BITTREX_SPOT_LUNA_USDT": "Luna - Bittrex",
+  "GEMINI_SPOT_LUNA_USD": "Luna - Gemini"
 }
 
-export const DefaultStartCoin = "BITFINEX_SPOT_LUNA_USD"
+export const ResolutionsConfig = {
+  "1MIN": "1 Minute",
+  "5MIN": "5 Minutes",
+  "15MIN": "15 Minutes",
+  "1HRS": "1 Hour",
+  "4HRS": "4 Hours",
+  "12HRS": "12 Hours",
+  "1DAY": "1 Day",
+  "7DAY": "7 Days",
+  "1MTH": "1 Month"
+}
+
+export const DefaultStartCoin = Object.keys(CoinsConfig)[0]
+export const DefaultStartResolution = Object.keys(ResolutionsConfig)[3]
 
 export const highchartOptions = {
   "series": [{

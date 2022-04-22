@@ -1,38 +1,59 @@
 import React from 'react';
-import Chart from './chart';
-import CoinChooser from './CoinChooser';
-import { getCoinHistoricalPrice } from './getCoinHistoricalPrice.js';
-import { DefaultStartCoin } from "./config.js"
 import { createRoot } from 'react-dom/client';
+import Chart from './chart';
+import Chooser from './Chooser';
+import { getCoinHistoricalPrice } from './getCoinHistoricalPrice.js';
+import { DefaultStartCoin, DefaultStartResolution } from "./config.js"
+import { ResolutionsConfig, CoinsConfig } from "./config.js"
 
 class App extends React.Component {
   constructor(props) {
 	  super(props);
     
-    let defaultStartCoin = DefaultStartCoin
 	  this.state = {
-      selectedCoin: defaultStartCoin,
+      selectedCoin: DefaultStartCoin,
 		  priceData: null,
-		  volumeData: null
+		  volumeData: null,
+		  resolution: DefaultStartResolution
 	  };
-    this.handleOnCoinSelectionChange(defaultStartCoin)
+    this.handleOnCoinSelectionChange(DefaultStartCoin)
   }
   
-  successCallback(data, selectedCoin) {
-    this.setState({selectedCoin: selectedCoin, priceData: data.priceData, volumeData: data.volumeData});
+  successCallback(data, selectedCoin, resolution) {
+    this.setState({selectedCoin: selectedCoin, priceData: data.priceData, volumeData: data.volumeData, resolution: resolution});
     console.log("index.state", this.state)
   }
   
-  async handleOnCoinSelectionChange(selectedCoin) {
-    getCoinHistoricalPrice(selectedCoin, new Date(), "1DAY")
-      .then((r) => this.successCallback(r, selectedCoin))
+  handleOnChange(selectedCoin, resolution) {
+    getCoinHistoricalPrice(selectedCoin, new Date(), resolution)
+      .then((r) => this.successCallback(r, selectedCoin, resolution))
       .catch((err) => console.error(err));
+  }
+  
+  handleOnCoinSelectionChange(selectedCoin) {
+    this.handleOnChange(selectedCoin, this.state.resolution)
+  }
+  
+  handleOnResolutionSelectionChange(resolution) {
+    this.handleOnChange(this.state.selectedCoin, resolution)
   }
   
   render() {
     return (
       <>
-        <CoinChooser selectedCoin={this.state.selectedCoin} handleOnCoinSelectionChange={(i) => this.handleOnCoinSelectionChange(i)} />
+        <Chooser 
+          labelText       = "Pick your coin\t:"
+          selectedValue   = {this.state.selectedCoin}
+          changeHandler   = {(i) => this.handleOnCoinSelectionChange(i)}
+          choices         = {CoinsConfig}
+        />
+        <br />
+        <Chooser 
+          labelText       = "Pick your resolution:"
+          selectedValue   = {this.state.resolution}
+          changeHandler   = {(i) => this.handleOnResolutionSelectionChange(i)}
+          choices         = {ResolutionsConfig}
+        />
         <Chart priceData = {this.state.priceData} volumeData = {this.state.volumeData} />
       </>
     );
@@ -42,4 +63,3 @@ class App extends React.Component {
 
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);
-// ReactDOM.render(<App />, document.getElementById('root'));
