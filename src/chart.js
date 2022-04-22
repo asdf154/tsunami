@@ -7,7 +7,6 @@ import HighchartsReact from 'highcharts-react-official'
 class Chart extends React.Component {
   render() {
     
-    //improvement: put this in the config, and interpolate the data in
     var options = highchartOptions(this.props.priceData, this.props.volumeData)
     
     return (
