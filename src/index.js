@@ -21,7 +21,6 @@ class App extends React.Component {
   
   successCallback(data, selectedCoin, resolution) {
     this.setState({selectedCoin: selectedCoin, priceData: data.priceData, volumeData: data.volumeData, resolution: resolution});
-    console.log("index.state", this.state)
   }
   
   handleOnChange(selectedCoin, resolution) {
@@ -42,7 +41,7 @@ class App extends React.Component {
     return (
       <>
         <Chooser 
-          labelText       = "Pick your coin\t:"
+          labelText       = "Pick your coin:"
           selectedValue   = {this.state.selectedCoin}
           changeHandler   = {(i) => this.handleOnCoinSelectionChange(i)}
           choices         = {CoinsConfig}
