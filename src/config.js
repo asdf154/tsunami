@@ -1,10 +1,9 @@
 export const CoinsConfig = {
   "coins": {
-    "bitcoin": "Bitcoin",
-    "ethereum": "Ethereum",
-    "terra-luna": "Luna",
-    "fantom": "FTM"
+    "BITFINEX_SPOT_LUNA_USD": "Luna - BitFinex",
+    "BITTREX_SPOT_LUNA_USDT": "Luna - Bittrex",
+    "GEMINI_SPOT_LUNA_USD": "Luna - Bittrex"
   }
 }
 
-export const DefaultStartCoin = "terra-luna"
+export const DefaultStartCoin = "BITFINEX_SPOT_LUNA_USD"
