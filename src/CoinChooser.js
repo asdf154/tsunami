@@ -7,7 +7,7 @@ class CoinChooser extends React.Component {
     var options = []
     for(var key in CoinsConfig.coins) {
       var value = CoinsConfig.coins[key];
-      options.push(<option value={key}>{value}</option>)
+      options.push(<option value={key} key={key}>{value}</option>)
     }
     this.state = {coinSelectHtmls: options}
   }

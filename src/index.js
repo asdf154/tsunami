@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Chart from './chart';
 import CoinChooser from './CoinChooser';
 import { getCoinHistoricalPrice } from './getCoinHistoricalPrice.js';
 import { DefaultStartCoin } from "./config.js"
+import { createRoot } from 'react-dom/client';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,33 +12,34 @@ class App extends React.Component {
     let defaultStartCoin = DefaultStartCoin
 	  this.state = {
       selectedCoin: defaultStartCoin,
-		  priceData: null
+		  priceData: null,
+		  volumeData: null
 	  };
     this.handleOnCoinSelectionChange(defaultStartCoin)
   }
   
-  successCallback(response, selectedCoin) {
-    let newPriceData = response.data.prices.map(t => {
-      return {x: new Date(t[0]), y: t[1]}
-    })
-    this.setState({selectedCoin: selectedCoin, priceData: newPriceData});
+  successCallback(data, selectedCoin) {
+    this.setState({selectedCoin: selectedCoin, priceData: data.priceData, volumeData: data.volumeData});
+    console.log("index.state", this.state)
   }
   
   async handleOnCoinSelectionChange(selectedCoin) {
-    getCoinHistoricalPrice(selectedCoin)
+    getCoinHistoricalPrice(selectedCoin, new Date(), "1DAY")
       .then((r) => this.successCallback(r, selectedCoin))
       .catch((err) => console.error(err));
   }
   
   render() {
     return (
-      <div>
+      <>
         <CoinChooser selectedCoin={this.state.selectedCoin} handleOnCoinSelectionChange={(i) => this.handleOnCoinSelectionChange(i)} />
-        <Chart priceData = {this.state.priceData} />
-      </div>
+        <Chart priceData = {this.state.priceData} volumeData = {this.state.volumeData} />
+      </>
     );
   }
 }
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
+// ReactDOM.render(<App />, document.getElementById('root'));
